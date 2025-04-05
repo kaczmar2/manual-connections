@@ -151,6 +151,10 @@ while true; do
     echo -e Expires on'\t'"${red}$(date --date="$expires_at")${nc}"
     echo -e "\n${green}This script will need to remain active to use port forwarding, and will refresh every 15 minutes.${nc}\n"
 
+    # Call qBittorrent port update script directly with port as argument
+    echo -e "${green}Calling update-qbt-port.sh with port ${port}${nc}"
+    /opt/pia/update-qbt-port.sh "$port"
+
     # sleep 15 minutes
     sleep 900
 done
