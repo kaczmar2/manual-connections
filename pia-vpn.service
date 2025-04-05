@@ -1,0 +1,23 @@
+# /etc/systemd/system/pia-vpn.service
+
+[Unit]
+Description=Private Internet Access VPN (WireGuard with Split Tunnel)
+After=network.target
+
+[Service]
+Type=idle
+WorkingDirectory=/opt/pia
+Environment="VPN_PROTOCOL=wireguard"
+Environment="DISABLE_IPV6=yes"
+Environment="AUTOCONNECT=true"
+Environment="PIA_PF=true"
+Environment="PIA_DNS=true"
+Environment="PIA_USER=p0123456"
+Environment="PIA_PASS=xxxxxxxxx"
+ExecStart=/bin/bash -c './add-lan-route.sh && ./run_setup.sh'
+ExecStopPost=/bin/bash -c '/opt/pia/remove-lan-route.sh; wg-quick down pia'
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
