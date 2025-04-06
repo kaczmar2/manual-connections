@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# qBittorrent Web UI credentials
 QB_HOST="localhost"
 QB_PORT="8080"
 QB_USERNAME="admin"
 QB_PASSWORD="yourpassword"
+INTERFACE="pia"
 PORT="$1"
 
 if [[ -z "$PORT" || ! "$PORT" =~ ^[0-9]+$ ]]; then
@@ -35,10 +35,10 @@ if [[ -z "$COOKIE" ]]; then
   exit 1
 fi
 
-# Set listening port
+# Set listening port and interface
 RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
   --cookie "$COOKIE" \
-  --data-urlencode "json={\"listen_port\":$PORT}" \
+  --data-urlencode "json={\"listen_port\":$PORT,\"current_network_interface\":\"$INTERFACE\"}" \
   "http://$QB_HOST:$QB_PORT/api/v2/app/setPreferences")
 
 if [[ "$RESPONSE" == "200" ]]; then
